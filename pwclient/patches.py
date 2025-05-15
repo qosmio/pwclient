@@ -48,11 +48,32 @@ def _list_patches(patches, format_str=None):
         for patch in patches:
             print(format_field_re.sub(patch_field, format_str))
     else:
-        print("%-7s %-12s %s" % ("ID", "State", "Name"))
-        print("%-7s %-12s %s" % ("--", "-----", "----"))
+        # ID and State need to be the same width as the longest ID and State
+        width_id, width_state, width_name = 2, 5, 30
         for patch in patches:
+            width_id = max(width_id, len(str(patch['id'])))
+            width_state = max(width_state, len(patch['state']))
+            width_name = max(width_name, len(patch['name']))
+        print(
+            f"{'Date':<10} "
+            f"{'ID':<{width_id}} "
+            f"{'State':<{width_state}} "
+            f"{'Name':<{width_name}}"
+        )
+        print(
+            f"{'-'*10} "
+            f"{'-'*width_id} "
+            f"{'-'*width_state} "
+            f"{'-'*width_name}"
+        )
+
+        for patch in patches:
+            date_only = patch['date'].split(' ')[0]
             print(
-                "%-7d %-12s %s" % (patch['id'], patch['state'], patch['name'])
+                f"{date_only:<10} "
+                f"{patch['id']:<{width_id}} "
+                f"{patch['state']:<{width_state}} "
+                f"{patch['name']:<{width_name}} "
             )
 
 
