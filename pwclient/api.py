@@ -269,8 +269,7 @@ class XMLRPC(API):
             state_id = self._state_id_by_name(state)
             if state_id == 0:
                 sys.stderr.write(
-                    "Note: No State found matching %s*, "
-                    "ignoring filter\n" % state
+                    f"Note: No State found matching {state}*, ignoring filter\n"
                 )
             else:
                 filters['state_id'] = state_id
@@ -279,8 +278,7 @@ class XMLRPC(API):
             project_id = self._project_id_by_name(project)
             if project_id == 0:
                 sys.stderr.write(
-                    "Note: No Project found matching %s, "
-                    "ignoring filter\n" % project
+                    f"Note: No Project found matching {project}, ignoring filter\n"
                 )
             else:
                 filters['project_id'] = project_id
@@ -296,7 +294,7 @@ class XMLRPC(API):
             person_ids = self._person_ids_by_name(submitter)
             if len(person_ids) == 0:
                 sys.stderr.write(
-                    "Note: Nobody found matching *%s*\n" % submitter
+                    f"Note: Nobody found matching *{submitter}*\n"
                 )
             else:
                 for person_id in person_ids:
@@ -309,7 +307,7 @@ class XMLRPC(API):
             delegate_ids = self._person_ids_by_name(delegate)
             if len(delegate_ids) == 0:
                 sys.stderr.write(
-                    "Note: Nobody found matching *%s*\n" % delegate
+                    f"Note: Nobody found matching *{delegate}*\n"
                 )
             else:
                 for delegate_id in delegate_ids:
@@ -324,7 +322,7 @@ class XMLRPC(API):
         patch = self._client.patch_get(patch_id)
         if patch == {}:
             raise exceptions.APIError(
-                'Unable to fetch patch %d; does it exist?' % patch_id
+                f'Unable to fetch patch {int(patch_id)}; does it exist?'
             )
 
         return self._decode_patch(patch)
@@ -341,7 +339,7 @@ class XMLRPC(API):
         mbox = self._client.patch_get_mbox(patch_id)
         if len(mbox) == 0:
             raise exceptions.APIError(
-                'Unable to fetch mbox for patch %d; does it exist?' % patch_id
+                f'Unable to fetch mbox for patch {int(patch_id)}; does it exist?'
             )
 
         return mbox, patch['filename']
@@ -362,7 +360,7 @@ class XMLRPC(API):
             state_id = self._state_id_by_name(state)
             if state_id == 0:
                 raise exceptions.APIError(
-                    'No State found matching %s*' % state
+                    f'No State found matching {state}*'
                 )
                 sys.exit(1)
 
@@ -378,7 +376,7 @@ class XMLRPC(API):
             self._client.patch_set(patch_id, params)
         except xmlrpclib.Fault as f:
             raise exceptions.APIError(
-                'Error updating patch: %s' % f.faultString
+                f'Error updating patch: {f.faultString}'
             )
 
     # states
@@ -424,7 +422,7 @@ class XMLRPC(API):
             )
         except xmlrpclib.Fault as f:
             raise exceptions.APIError(
-                'Error creating check: %s' % f.faultString
+                f'Error creating check: {f.faultString}'
             )
 
 

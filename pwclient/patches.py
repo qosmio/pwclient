@@ -124,7 +124,7 @@ def action_info(api, patch_id):
         print(str(exc), file=sys.stderr)
         sys.exit(1)
 
-    s = "Information for patch id %d" % (patch_id)
+    s = f"Information for patch id {int(patch_id)}"
     print(s)
     print('-' * len(s))
     for key, value in sorted(patch.items()):
@@ -145,12 +145,12 @@ def action_get(api, patch_id):
     fname += '.patch'
     i = 0
     while os.path.exists(fname):
-        fname = "%s.%d.patch" % (base_fname, i)
+        fname = f"{base_fname}.{int(i)}.patch"
         i += 1
 
     with io.open(fname, 'x', encoding='utf-8') as f:
         f.write(mbox)
-        print('Saved patch to %s' % fname)
+        print(f'Saved patch to {fname}')
 
 
 def action_view(api, patch_ids):
@@ -197,14 +197,14 @@ def action_apply(api, patch_id, apply_cmd=None):
         sys.exit(1)
 
     if apply_cmd is None:
-        print('Applying patch #%d to current directory' % patch_id)
+        print(f'Applying patch #{int(patch_id)} to current directory')
         apply_cmd = ['patch', '-p1']
     else:
         print(
-            'Applying patch #%d using "%s"' % (patch_id, ' '.join(apply_cmd))
+            f'Applying patch #{int(patch_id)} using "{' '.join(apply_cmd)}"'
         )
 
-    print('Description: %s' % patch['name'])
+    print(f"Description: {patch['name']}")
 
     try:
         mbox, _ = api.patch_get_mbox(patch_id)
